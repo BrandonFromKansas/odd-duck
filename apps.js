@@ -1,6 +1,6 @@
 state = {
   products: [],
-  maxVotes: 25,
+  maxVotes: 6,
   votesCast: 0,
 }
 
@@ -10,7 +10,8 @@ state = {
 let productImage1 = document.querySelector('.product1 img');
 let productImage2 = document.querySelector('.product2 img');
 let productImage3 = document.querySelector('.product3 img');
-let productContainer = document.querySelector('.products')
+let productContainer = document.querySelector('.products');
+let resultsContainer = document.querySelector('.results');
 
 // Constructor function to create Product objects.
 function Product(name, imagePath) {
@@ -18,7 +19,7 @@ function Product(name, imagePath) {
   this.imagePath = imagePath;
   this.views = 0;
   this.votes = 0;
-  state.products.push( this );
+  state.products.push(this);
 }
 
 function getRandomNumber() {
@@ -30,7 +31,7 @@ function renderProducts() {
   let product2 = getRandomNumber();
   let product3 = getRandomNumber();
 
-  while(product1 === product2 || product1 === product3 || product2 === product3);
+  while (product1 === product2 || product1 === product3 || product2 === product3);
 
   //Showing product on screen.
   productImage1.src = state.products[product1].imagePath;
@@ -51,11 +52,22 @@ function renderProducts() {
 
 }
 
+function showTotals() {
+  for (let i = 0; i < state.products.length; i++) {
+    let productData = document.createElement('div');
+    productData.textContent = `${state.products[i].name} had ${state.products[i].votes} votes and was shown ${state.products[i].views} times`;
+    resultsContainer.appendChild(productData)
+  }
+}
+
+
+
+
 productContainer.addEventListener('click', (event) => {
 
   let name = event.target.alt;
-  for (let i=0; i < state.products.length; i++) {
-    if(state.products[i].name === name) {
+  for (let i = 0; i < state.products.length; i++) {
+    if (state.products[i].name === name) {
       state.products[i].votes++;
       break;
     }
@@ -63,10 +75,11 @@ productContainer.addEventListener('click', (event) => {
 
   state.votesCast++;
 
-  if(state.votesCast >= state.maxVotes) {
-    alert('Thanks for participating')
+
+  if (state.votesCast >= state.maxVotes) {
+
+    showTotals();
   } else {
-    
     renderProducts();
   }
 
