@@ -1,11 +1,15 @@
-state = {
+let state = {
   products: [],
   maxVotes: 6,
   votesCast: 0,
-}
+};
 
 // let allProducts = []
-// let allProductNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dogDuck', 'dragon', 'pen', 'petSweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'waterCan', 'wineGlass']
+let allProductNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'water-can', 'wine-glass'];
+for (let i = 0; i < allProductNames.length; i++) {
+  new Product(allProductNames[i], `./assets/${allProductNames[i]}.jpg`);
+  //"./assets/" + allProductNames[i] + ".jpg"  <--this is exactly what is inside the backtics above.
+}
 
 let productImage1 = document.querySelector('.product1 img');
 let productImage2 = document.querySelector('.product2 img');
@@ -31,7 +35,9 @@ function renderProducts() {
   let product2 = getRandomNumber();
   let product3 = getRandomNumber();
 
-  while (product1 === product2 || product1 === product3 || product2 === product3);
+  if (product1 === product2 || product1 === product3 || product2 === product3) {
+    renderProducts();
+  }
 
   //Showing product on screen.
   productImage1.src = state.products[product1].imagePath;
@@ -75,7 +81,7 @@ productContainer.addEventListener('click', (event) => {
 
   state.votesCast++;
 
-
+console.log(state);
   if (state.votesCast >= state.maxVotes) {
 
     showTotals();
@@ -86,36 +92,5 @@ productContainer.addEventListener('click', (event) => {
 });
 
 
-// Array that holds all Product objects.
 
-let bag = new Product("bag", "./assets/bag.jpg");
-let banana = new Product("banana", "./assets/banana.jpg");
-let bathroom = new Product("bathroom", "./assets/bathroom.jpg");
-let boots = new Product("boots", "./assets/boots.jpg");
-let breakfast = new Product("breakfast", "./assets/breakfast.jpg");
-let bubblegum = new Product("bubblegum", "./assets/bubblegum.jpg");
-let chair = new Product("chair", "./assets/chair.jpg");
-let cthulhu = new Product("cthulhu", "./assets/cthulhu.jpg");
-let dogDuck = new Product("dog-duck", "./assets/dog-duck.jpg");
-let dragon = new Product("dragon", "./assets/dragon.jpg");
-let pen = new Product("pen", "./assets/pen.jpg");
-let petSweep = new Product("pet-sweep", "./assets/pet-sweep.jpg");
-let scissors = new Product("scissors", "./assets/scissors.jpg");
-let shark = new Product("shark", "./assets/shark.jpg");
-let sweep = new Product("sweep", "./assets/sweep.png");
-let tauntaun = new Product("tauntaun", "./assets/tauntaun.jpg");
-let unicorn = new Product("unicorn", "./assets/unicorn.jpg");
-let waterCan = new Product("water-can", "./assets/water-can.jpg");
-let wineGlass = new Product("wine-glass", "./assets/wine-glass.jpg");
-
-// allProducts.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass);
-
-// for (let i = 0; i <= allProducts.length; i++) {
-//   let constructedProduct = new Product(allProductNames[i], `./assets/${allProductNames[i]}.jpg`);
-//   allProductNames.push(constructedProduct);
-// }
-
-
-// console.log(state.products);
-
-renderProducts()
+renderProducts();
