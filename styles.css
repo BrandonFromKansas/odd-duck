@@ -1,6 +1,6 @@
 .container {  display: grid;
   grid-template-columns: 20% 1fr 1fr 1fr 20%;
-  grid-template-rows: 50px 1fr 1fr 50px;
+  grid-template-rows: 50px 200px 1fr 50px;
   grid-auto-columns: 1fr;
   gap: 15px 15px;
   grid-auto-flow: row;
@@ -20,6 +20,8 @@
 .products { 
   grid-area: products; 
   display: flex;
+  height: 185px;
+  width: 185px;
 }
 
 .header, .footer, .product1, .product2, .product3, .results { 
@@ -27,5 +29,6 @@
 }
 
 img {
+  height: 151px;
   width: 150px;
 }
