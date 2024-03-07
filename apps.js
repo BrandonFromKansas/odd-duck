@@ -1,4 +1,3 @@
-
 // Declare a single "state" variable (object) to store application variables.
 let state = {
   products: [],
@@ -22,16 +21,34 @@ let productContainer = document.querySelector('.products');
 let resultsContainer = document.querySelector('.results');
 
 //Constructor function to create Product objects. The product constructor.
-function Product(name, imagePath) {
+function Product(name, imagePath, views = 0, votes = 0) {
   this.name = name;
   this.imagePath = imagePath;
-  this.views = 0;
-  this.votes = 0;
+  this.views = views;
+  this.votes = votes;
   state.products.push(this);
 }
 
 function getRandomNumber() {
   return Math.floor(Math.random() * state.products.length);
+}
+
+
+//Local Storage function
+function loadProducts(){
+  let savedProducts = localStorage.getItem('products');
+  if( savedProducts){
+    let parsedProducts = JSON.parse(savedProducts);
+    console.log(parsedProducts);
+    state.products = parsedProducts.map(productData => new Product(productData.name, productData.imagePath, productData.views, productData.votes));
+  } else{
+    renderProducts();
+  }
+}
+
+function savedProducts() {
+  let stringifiedProducts = JSON.stringify(state.products);
+  localStorage.setItem('products', stringifiedProducts);
 }
 
 
@@ -72,12 +89,7 @@ function renderProducts() {
 // This will display at the very end of the voting, when the amount of max votes are reached.
 // Iterate the products array and display the name, votes, and views of each product.
 function showTotals() {
-  //This piece of code will have results dipslay on screen in text format. For lab 12, we no longer need it.
-  // for (let i = 0; i < state.products.length; i++) {
-  //   let productData = document.createElement('div');
-  //   productData.textContent = `${state.products[i].name} had ${state.products[i].votes} votes and was shown ${state.products[i].views} times`;
-  //   resultsContainer.appendChild(productData);
-  // }
+
 
   let chartVotes = [];
   let chartViews = [];
@@ -146,7 +158,6 @@ function showTotals() {
 // This will also note the number of total votes cast and stop if it is exceeded.
 // This was originally written as all one function. Then, John showed that by declaring the variable voteForTheProduct, and using that in the addEventListener function, we can then reference voteForTheProduct towards the bottom in our removeEventListener function at the end of the code block.
 productContainer.addEventListener('click', voteForTheProduct);
-
 function voteForTheProduct(event) {
 
   let name = event.target.alt;
@@ -156,19 +167,20 @@ function voteForTheProduct(event) {
       break;
     }
   }
-
   state.votesCast++;
-
   console.log(state);
 
   if (state.votesCast >= state.maxVotes) {
     showTotals();
+
+    //NEW
+    savedProducts();
     productContainer.removeEventListener('click', voteForTheProduct);
   } else {
     renderProducts();
   }
 
-};
-
-
+}
 renderProducts();
+
+loadProducts();
